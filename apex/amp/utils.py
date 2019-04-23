@@ -6,9 +6,19 @@ import itertools
 import torch
 
 def get_cuda_version():
+    r"""Returns the CUDA version as a tuple of ints.
+    """
     return tuple(int(x) for x in torch.version.cuda.split('.'))
 
 def is_fp_tensor(x):
+    r"""Checks if the passed object is or contains floating point tensors.
+    
+    Works on `torch.Tensor`s and `torch.autograd.Variable`s for backward
+    compatibility reasons.
+    Floating point tensors are: `torch.HalfTensor`, `torch.FloatTensor`, and
+    `torch.DoubleTensor`.
+    Works recursively on lists and tuples.
+    """
     if is_nested(x):
         # Fast-fail version of all(is_fp_tensor)
         for y in x:
@@ -21,6 +31,12 @@ def is_nested(x):
     return isinstance(x, tuple) or isinstance(x, list)
 
 def should_cache(x):
+    r"""Returns True if the passed object `x` should be cached.
+
+    An object is cached, if it's an instance of `torch.nn.parameter.Parameter`
+    and a `torch.FloatTensor`.
+    Works recursively on lists and tuples.
+    """    
     if is_nested(x):
         # Fast-fail version of all(should_cache)
         for y in x:
@@ -46,9 +62,25 @@ def collect_fp_tensor_types(args, kwargs):
     return types
 
 def type_string(x):
+    r"""Returns the type of a tensor as a string.
+
+    Splits the returned string of tensor.type() and returns the last part.
+    E.g.:
+        x = torch.randn(1, device='cuda')
+        print(x.type())
+        > 'torch.cuda.FloatTensor'
+        print(type_string(x))
+        > 'FloatTensor'
+    """
     return x.type().split('.')[-1]
 
 def maybe_half(x, name='', verbose=False):
+    r"""Tries to convert a FloatTensor to a HalfTensor.
+
+    Returns the passed tensor `x` if it is not a CUDA tensor or already a 
+    HalfTensor. Otherwise casts `x` using `x.half()`.
+    Works recursively on lists and tuples and returns the same object type.
+    """
     if is_nested(x):
         return type(x)([maybe_half(y) for y in x])
 
@@ -60,6 +92,12 @@ def maybe_half(x, name='', verbose=False):
         return x.half()
 
 def maybe_float(x, name='', verbose=False):
+    r"""Tries to convert a HaloTensor to a FloatTensor.
+
+    Returns the passed tensor `x` if it is not a CUDA tensor or already a 
+    FloatTensor. Otherwise casts `x` using `x.float()`.
+    Works recursively on lists and tuples and returns the same object type.
+    """
     if is_nested(x):
         return type(x)([maybe_float(y) for y in x])
 

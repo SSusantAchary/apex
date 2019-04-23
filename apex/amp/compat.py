@@ -14,14 +14,16 @@ def tensor_is_float_tensor():
     x = torch.Tensor()
     return type(x) == torch.FloatTensor
 
-# Akin to `torch.is_tensor`, but returns True for Variable
-# objects in pre-0.4.
 def is_tensor_like(x):
+    r"""Akin to `torch.is_tensor`, but returns True for Variable
+    objects in pre-0.4.
+    """
     return torch.is_tensor(x) or isinstance(x, torch.autograd.Variable)
 
-# Wraps `torch.is_floating_point` if present, otherwise checks
-# the suffix of `x.type()`.
 def is_floating_point(x):
+    r"""Wraps `torch.is_floating_point` if present, otherwise checks
+    the suffix of `x.type()`.
+    """
     if hasattr(torch, 'is_floating_point'):
         return torch.is_floating_point(x)
     try:
