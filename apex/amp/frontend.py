@@ -204,6 +204,7 @@ def initialize(
     cast_model_outputs=None,
     num_losses=1,
     verbosity=1,
+    debug=False,
     ):
     """
     Initialize your models, optimizers, and the Torch tensor and functional namespace according to the
@@ -299,6 +300,7 @@ def initialize(
     """
     _amp_state.opt_properties = Properties()
     _amp_state.verbosity = verbosity
+    _amp_state.debug = debug
 
     if not enabled:
         return models, optimizers

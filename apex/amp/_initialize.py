@@ -212,6 +212,21 @@ def _initialize(models, optimizers, properties, num_losses=1, cast_model_outputs
 
             model.forward = patch_forward(model.forward)
 
+    # Add debug casting
+    if _amp_state.debug:
+        for model in models:
+            def patch_forward_debug(old_fwd):
+                def dispatch_fwd(*args, **kwargs):
+                    output = old_fwd(*args, **kwargs)
+                    with disable_casts():
+                        output_debug = old_fwd(*args, **kwargs)
+                    # store output_debug in amp_handle to avoid changing training code
+                    _amp_state.handle._output_debug = output_debug
+                    return output
+                return dispatch_fwd
+    
+            model.forward = patch_forward_debug(model.forward)
+
     for i, optimizer in enumerate(optimizers):
         # Still need to special case this for the first pass
         if isinstance(optimizer, FusedAdam):
