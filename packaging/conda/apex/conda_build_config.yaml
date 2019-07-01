@@ -1,0 +1,12 @@
+blas_impl:
+  - mkl
+python:
+  - 3.5
+  - 3.6
+vc:
+  - 14
+zip_keys:
+  -                             # [win]
+    - vc                        # [win]
+    - c_compiler                # [win]
+    - cxx_compiler              # [win]
