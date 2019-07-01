@@ -10,7 +10,7 @@ from torch import nn
 import torch.nn.functional as F
 from torch.nn import Parameter
 
-from utils import common_init, HALF, FLOAT,\
+from .utils import common_init, HALF, FLOAT,\
     ALWAYS_HALF, ALWAYS_FLOAT, MATCH_INPUT
 
 class MyModel(torch.nn.Module):
