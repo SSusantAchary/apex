@@ -16,7 +16,7 @@ if [ "$#" -ne 1 ]; then
 fi
 desired_cuda="$1"
 
-export APEX_BUILD_VERSION="master" # TODO: we should add tags to apex, to be able to checkout e.g. "0.1.0"
+export APEX_BUILD_VERSION="master" # "packaging" # TODO: we should add tags to apex, to be able to checkout e.g. "0.1.0"
 export APEX_BUILD_NUMBER=1
 
 SOURCE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
