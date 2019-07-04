@@ -12,12 +12,12 @@ requirements:
 
   host:
     - python
-    - pytorch{{ environ.get('APEX_PACKAGE_SUFFIX') }} >=0.4.1
+    - pytorch{{ environ.get('APEX_PACKAGE_SUFFIX') }} >=1.1.0
 {{ environ.get('CONDA_CUDATOOLKIT_CONSTRAINT') }}
 
   run:
     - python
-    - pytorch{{ environ.get('APEX_PACKAGE_SUFFIX') }} >=0.4.1
+    - pytorch{{ environ.get('APEX_PACKAGE_SUFFIX') }} >=1.1.0
 {{ environ.get('CONDA_CUDATOOLKIT_CONSTRAINT') }}
 
 build:
