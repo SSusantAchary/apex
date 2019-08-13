@@ -43,6 +43,8 @@ if [[ "$desired_cuda" == "10.0" ]]; then
   export CONDA_CUDATOOLKIT_CONSTRAINT="    - cudatoolkit >=10.0,<10.1 # [not osx]"
 elif [[ "$desired_cuda" == "9.0" ]]; then
   export CONDA_CUDATOOLKIT_CONSTRAINT="    - cudatoolkit >=9.0,<9.1 # [not osx]"
+elif [[ "$desired_cuda" == "9.2" ]]; then
+  export CONDA_CUDATOOLKIT_CONSTRAINT="    - cudatoolkit >=9.2,<10.0 # [not osx]"
 else
   echo "unhandled desired_cuda: $desired_cuda"
     exit 1
