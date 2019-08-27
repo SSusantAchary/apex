@@ -1,5 +1,6 @@
 import contextlib
 import warnings
+import sys
 import torch
 
 from . import utils
@@ -8,7 +9,8 @@ from .scaler import LossScaler
 from ._amp_state import _amp_state, master_params, maybe_print
 from ..fp16_utils import FP16_Optimizer as FP16_Optimizer_general
 from ..optimizers import FP16_Optimizer as FP16_Optimizer_for_fused
-from ..parallel.LARC import LARC
+if torch.distributed.is_available():
+    from ..parallel.LARC import LARC
 
 
 # There's no reason to expose the notion of a "handle". Everything can happen through amp.* calls.
@@ -86,7 +88,7 @@ def scale_loss(loss,
         yield loss
         return
 
-    if isinstance(optimizers, torch.optim.Optimizer) or isinstance(optimizers, LARC):
+    if isinstance(optimizers, torch.optim.Optimizer) or ('LARC' in sys.modules and isinstance(optimizers, LARC)):
         optimizers = [optimizers]
 
     # this is what happens when i have to support tools from different sources under the same API...
