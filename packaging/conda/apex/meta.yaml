@@ -23,7 +23,7 @@ requirements:
 build:
   number: {{ environ.get('APEX_BUILD_NUMBER') }}
   string: py{{py}}_cu{{ environ['CUDA_VERSION'] }}_{{environ.get('APEX_BUILD_NUMBER')}}
-  script: pip install -v --no-cache-dir --global-option="--cpp_ext" --global-option="--cuda_ext" .
+  script: pip install -v --no-cache-dir --global-option="--pyprof" --global-option="--cpp_ext" --global-option="--cuda_ext" ./
   script_env:
     - CUDA_VERSION
 
